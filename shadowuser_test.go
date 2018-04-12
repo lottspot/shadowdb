@@ -2,6 +2,7 @@ package shadowdb
 
 import (
   "testing"
+  "time"
 )
 
 func TestNewUserFromRecord(t *testing.T) {
@@ -65,16 +66,22 @@ func TestUname(t *testing.T) {
 
 func TestPwhash(t *testing.T) {
   u := shadowUser{}
+  epoch := time.Unix(0, 0)
+  daysSinceEpoch := int(time.Since(epoch).Hours()) / 24
   u.SetPwhash("foo")
-  result := u.Pwhash()
-  if result != "foo" {
-    t.Error("Unexpected value for pwhash:", result)
+  pwhash := u.Pwhash()
+  lastChange := u.LastChange()
+  if pwhash != "foo" {
+    t.Error("Unexpected value for pwhash:", pwhash)
+  }
+  if lastChange != daysSinceEpoch {
+    t.Error("lastChange: expected", daysSinceEpoch, ", got", lastChange)
   }
 }
 
 func TestLastChange(t *testing.T) {
   u := shadowUser{}
-  u.SetLastChange(1)
+  u.lastChange = "1"
   result := u.LastChange()
   internal := u.lastChange
   if result != 1 {

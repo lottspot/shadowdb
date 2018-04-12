@@ -4,6 +4,7 @@ import (
   "strings"
   "strconv"
   "errors"
+  "time"
 )
 
 type shadowUser struct {
@@ -122,15 +123,10 @@ func (u *shadowUser) SetUname(uname string) {
 }
 
 func (u *shadowUser) SetPwhash(pwhash string) {
+  epoch := time.Unix(0, 0)
+  daysSinceEpoch := int(time.Since(epoch).Hours()) / 24
   u.pwhash = pwhash
-}
-
-func (u *shadowUser) SetLastChange(lastChange int) {
-  if lastChange < 0 {
-    u.lastChange = ""
-  } else {
-    u.lastChange = strconv.FormatInt(int64(lastChange), 10)
-  }
+  u.lastChange = strconv.FormatInt(int64(daysSinceEpoch), 10)
 }
 
 func (u *shadowUser) SetMinAge(minAge int) {
