@@ -156,3 +156,17 @@ func TestExpires(t *testing.T) {
     t.Error("Unexpected internal storage value for expires:", internal)
   }
 }
+
+func TestCopy(t *testing.T) {
+  u := shadowUser{
+    uname: "foo",
+    pwhash: "bar",
+  }
+  c := u.Copy()
+  if &u == &c {
+    t.Error("c is not a copy of u")
+  }
+  if u != c {
+    t.Error("c does not match u")
+  }
+}

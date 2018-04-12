@@ -168,3 +168,7 @@ func (u *shadowUser) SetExpires(expires int) {
     u.expires = strconv.FormatInt(int64(expires), 10)
   }
 }
+
+func (u *shadowUser) Copy() shadowUser {
+  return *u
+}
