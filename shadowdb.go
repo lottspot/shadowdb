@@ -41,8 +41,8 @@ func (db *shadowDB) Dump(w io.Writer) error {
   return nil
 }
 
-func (db *shadowDB) User(uname string) *shadowUser {
-  return new(shadowUser)
+func (db *shadowDB) User(uname string) shadowUser {
+  return shadowUser{}
 }
 
 func (db *shadowDB) ApplyUser(u ShadowUser) {
