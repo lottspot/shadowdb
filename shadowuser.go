@@ -3,6 +3,7 @@ package shadowdb
 import (
   "strings"
   "strconv"
+  "errors"
 )
 
 type shadowUser struct {
@@ -20,8 +21,11 @@ func NewUser() *shadowUser {
   return new(shadowUser)
 }
 
-func UserFromRecord(record string) *shadowUser {
+func NewUserFromRecord(record string) (*shadowUser, error) {
   recordSlice := strings.Split(record, ":")
+  if len(recordSlice) != 9 {
+    return nil, errors.New("Invalid shadowdb record")
+  }
   return &shadowUser{
     uname: recordSlice[0],
     pwhash: recordSlice[1],
@@ -31,7 +35,7 @@ func UserFromRecord(record string) *shadowUser {
     warnDays: recordSlice[5],
     graceDays: recordSlice[6],
     expires: recordSlice[7],
-  }
+  }, nil
 }
 
 func (u *shadowUser) AsRecord() string {
