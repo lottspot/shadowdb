@@ -21,6 +21,7 @@ func NewUser() *shadowUser {
   return new(shadowUser)
 }
 
+// Return a deserialized shadowdb user entry
 func NewUserFromRecord(record string) (*shadowUser, error) {
   recordSlice := strings.Split(record, ":")
   if len(recordSlice) != 9 {
@@ -38,6 +39,7 @@ func NewUserFromRecord(record string) (*shadowUser, error) {
   }, nil
 }
 
+// Return a serialized copy of the current shadowdb user record
 func (u *shadowUser) AsRecord() string {
   recordSlice := []string{
     u.uname,
