@@ -49,6 +49,68 @@ func (u *shadowUser) AsRecord() string {
   return strings.Join(recordSlice, ":")
 }
 
+func (u *shadowUser) Uname() string {
+  return u.uname
+}
+
+func (u *shadowUser) Pwhash() string {
+  return u.pwhash
+}
+
+func (u *shadowUser) LastChange() int {
+  lastChange, e := strconv.ParseInt(u.lastChange, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(lastChange)
+  }
+}
+
+func (u *shadowUser) MinAge() int {
+  minAge, e := strconv.ParseInt(u.minAge, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(minAge)
+  }
+}
+
+func (u *shadowUser) MaxAge() int {
+  maxAge, e := strconv.ParseInt(u.maxAge, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(maxAge)
+  }
+}
+
+func (u *shadowUser) WarnDays() int {
+  warnDays, e := strconv.ParseInt(u.warnDays, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(warnDays)
+  }
+}
+
+func (u *shadowUser) GraceDays() int {
+  graceDays, e := strconv.ParseInt(u.graceDays, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(graceDays)
+  }
+}
+
+func (u *shadowUser) Expires() int {
+  expires, e := strconv.ParseInt(u.expires, 10, 0)
+  if e != nil { // This covers the case of an empty string
+    return -1
+  } else {
+    return int(expires)
+  }
+}
+
 func (u *shadowUser) SetUname(uname string) {
   u.uname = uname
 }
