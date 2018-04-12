@@ -4,9 +4,54 @@ import (
   "testing"
 )
 
+func TestNewUserFromRecord(t *testing.T) {
+  record := "foo:bar:1::120:7:7::"
+  u, e := NewUserFromRecord(record)
+  if e != nil {
+    t.Fatal("Error initializing user:", e.Error())
+  }
+  if u.uname != "foo" {
+    t.Error("uname: expected \"foo\", got", u.uname)
+  }
+  if u.pwhash != "bar" {
+    t.Error("pwhash: expected \"bar\", got", u.pwhash)
+  }
+  if u.lastChange != "1" {
+    t.Error("lastChange: expected \"1\", got", u.lastChange)
+  }
+  if u.minAge != "" {
+    t.Error("minAge: expected \"\", got", u.minAge)
+  }
+  if u.maxAge != "120" {
+    t.Error("maxAge: expected \"120\", got", u.maxAge)
+  }
+  if u.warnDays != "7" {
+    t.Error("warnDays: expected \"7\", got", u.warnDays)
+  }
+  if u.graceDays != "7" {
+    t.Error("graceDays: expected \"7\", got", u.graceDays)
+  }
+  if u.expires != "" {
+    t.Error("expires: expected \"\", got", u.expires)
+  }
+}
+
 func TestAsRecord(t *testing.T) {
-  u := shadowUser{}
-  t.Log("successfully assigned ShadowUser:", u)
+  u := shadowUser{
+    uname: "foo",
+    pwhash: "bar",
+    lastChange: "1",
+    minAge: "",
+    maxAge: "120",
+    warnDays: "7",
+    graceDays: "7",
+    expires: "",
+  }
+  record := u.AsRecord()
+  expect := "foo:bar:1::120:7:7::"
+  if record != expect {
+    t.Error("\nexpected:", expect, "\nreceived:", record)
+  }
 }
 
 func TestUname(t *testing.T) {
