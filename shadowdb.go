@@ -43,6 +43,10 @@ func (db *shadowDB) ApplyRecord(r DBRecord) {
 }
 
 func (db *shadowDB) PurgeUser(uname string) {
+  i := db.findRecord(uname)
+  if i >= 0 {
+    db.purgeRecordAt(uint(i))
+  }
 }
 
 func (db *shadowDB) findRecord(uname string) int {
