@@ -11,15 +11,23 @@ type DBRecord interface {
 
 type shadowDB struct {
   records []DBRecord
+  recordParser interface{}
 }
 
 func NewDB() *shadowDB {
   db := new(shadowDB)
   db.records = make([]DBRecord, 0)
+  db.recordParser = NewUserFromRecord
   return db
 }
 
 func (db *shadowDB) Load(r io.Reader) error {
+  /*
+   * parseFunc = reflect.ValueOf(db.recordParser)
+   * recordVal = reflect.ValueOf(record)
+   * parsedVal = parseFunc.Call([]reflect.Value{recordVal})
+   * parsedRec = parseVal[0].Interface().(DBRecord)
+   */
   return nil
 }
 
