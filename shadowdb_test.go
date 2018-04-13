@@ -82,3 +82,49 @@ func TestPurgeUser(t *testing.T){
     t.Error("user was not purged")
   }
 }
+
+func TestApplyRecord(t *testing.T){
+  user1Old := stubDBRecord{
+    uname: func() (string) {return "user1"},
+    record: func() (string) {return "old"},
+  }
+  user1New := stubDBRecord{
+    uname: func() (string) {return "user1"},
+    record: func() (string) {return "new"},
+  }
+  user2 := stubDBRecord{
+    uname: func() (string) {return "user2"},
+  }
+  records := []DBRecord{
+    user1Old,
+  }
+  db := shadowDB{
+    records: records,
+  }
+  db.ApplyRecord(user1New)
+  db.ApplyRecord(user2)
+  if db.records[0].Record() != "new" {
+    t.Error("user1 record was not updated")
+  }
+  if db.records[len(db.records)-1].Uname() != "user2" {
+    t.Error("user2 was not added to db")
+  }
+}
+
+func TestUserGetter(t *testing.T){
+  toGet := shadowUser{
+    uname: "getme",
+  }
+  records := []DBRecord{
+    &shadowUser{},
+    &shadowUser{},
+    &toGet,
+  }
+  db := shadowDB{
+    records: records,
+  }
+  got := db.User("getme")
+  if got.uname != toGet.uname {
+    t.Error("expected to get user", toGet.uname, ", got", got.uname)
+  }
+}
