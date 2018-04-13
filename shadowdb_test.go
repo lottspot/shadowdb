@@ -146,3 +146,20 @@ func TestDump(t *testing.T){
     t.Error("\nexpected:\nuser1\nuser2\nuser3\n\ngot:\n", result)
   }
 }
+
+func TestLoad(t *testing.T){
+  fileContents :=
+`user1
+user2
+user3
+`
+  file := bytes.NewBuffer([]byte(fileContents))
+  db := shadowDB{
+    recordParser: func (record string) stubDBRecord {return stubDBRecord{}},
+  }
+  db.Load(file)
+  nLoaded := len(db.records)
+  if nLoaded != 3 {
+    t.Error("expected 3 records loaded, got", nLoaded)
+  }
+}
