@@ -2,6 +2,7 @@ package shadowdb
 
 import (
   "io"
+  "bufio"
 )
 
 type DBRecord interface {
@@ -32,6 +33,15 @@ func (db *shadowDB) Load(r io.Reader) error {
 }
 
 func (db *shadowDB) Dump(w io.Writer) error {
+  writer := bufio.NewWriter(w)
+  for _, record := range db.records {
+    data := []byte(record.Record() + "\n")
+    _, e := writer.Write(data)
+    if e != nil {
+      return e
+    }
+  }
+  writer.Flush()
   return nil
 }
 
