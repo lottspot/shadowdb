@@ -28,3 +28,21 @@ func TestInsertRecordAt(t *testing.T) {
     t.Error("user did not appear at index 1")
   }
 }
+
+func TestPurgeRecordAt(t *testing.T) {
+  toPurge := stubDBRecord{
+    uname: func() (string) {return "purgeme"},
+  }
+  records := []DBRecord{
+    stubDBRecord{},
+    toPurge,
+    stubDBRecord{},
+  }
+  db := shadowDB{
+    records: records,
+  }
+  db.purgeRecordAt(1)
+  if db.records[1].Uname() == "purgeme" {
+    t.Error("user was not purged")
+  }
+}
