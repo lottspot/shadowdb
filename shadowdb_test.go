@@ -43,8 +43,10 @@ func TestPurgeRecordAt(t *testing.T) {
     records: records,
   }
   db.purgeRecordAt(1)
-  if db.records[1].Uname() == "purgeme" {
-    t.Error("user was not purged")
+  for _, record := range db.records {
+    if record.Uname() == "purgeme" {
+      t.Error("user was not purged")
+    }
   }
 }
 
@@ -79,8 +81,10 @@ func TestPurgeUser(t *testing.T){
     records: records,
   }
   db.PurgeUser("purgeme")
-  if db.records[1].Uname() == "purgeme" {
-    t.Error("user was not purged")
+  for _, record := range db.records {
+    if record.Uname() == "purgeme" {
+      t.Error("user was not purged")
+    }
   }
 }
 
