@@ -4,32 +4,18 @@ import (
   "io"
 )
 
-type ShadowUser interface {
-  AsRecord() string
+type DBRecord interface {
+  Record() string
   Uname() string
-  Pwhash() string
-  LastChange() int
-  MinAge() int
-  MaxAge() int
-  WarnDays() int
-  GraceDays() int
-  Expires() int
-  SetUname(uname string)
-  SetPwhash(pwhash string)
-  SetMinAge(minAge int)
-  SetMaxAge(maxAge int)
-  SetWarnDays(warnDays int)
-  SetGraceDays(graceDays int)
-  SetExpires(expires int)
 }
 
 type shadowDB struct {
-  records []ShadowUser
+  records []DBRecord
 }
 
 func NewDB() *shadowDB {
   db := new(shadowDB)
-  db.records = make([]ShadowUser, 0)
+  db.records = make([]DBRecord, 0)
   return db
 }
 
@@ -45,7 +31,7 @@ func (db *shadowDB) User(uname string) shadowUser {
   return shadowUser{}
 }
 
-func (db *shadowDB) ApplyUser(u ShadowUser) {
+func (db *shadowDB) ApplyRecord(r DBRecord) {
 }
 
 func (db *shadowDB) PurgeUser(uname string) {
@@ -58,5 +44,5 @@ func (db *shadowDB) findRecord(uname string) uint {
 func (db *shadowDB) purgeRecordAt(i uint) {
 }
 
-func (db *shadowDB) insertRecordAt(u ShadowUser, i uint) {
+func (db *shadowDB) insertRecordAt(u DBRecord, i uint) {
 }

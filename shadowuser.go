@@ -41,7 +41,7 @@ func NewUserFromRecord(record string) (*shadowUser, error) {
 }
 
 // Return a serialized copy of the current shadowdb user record
-func (u *shadowUser) AsRecord() string {
+func (u *shadowUser) Record() string {
   recordSlice := []string{
     u.uname,
     u.pwhash,

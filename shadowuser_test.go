@@ -37,7 +37,7 @@ func TestNewUserFromRecord(t *testing.T) {
   }
 }
 
-func TestAsRecord(t *testing.T) {
+func TestRecord(t *testing.T) {
   u := shadowUser{
     uname: "foo",
     pwhash: "bar",
@@ -48,7 +48,7 @@ func TestAsRecord(t *testing.T) {
     graceDays: "7",
     expires: "",
   }
-  record := u.AsRecord()
+  record := u.Record()
   expect := "foo:bar:1::120:7:7::"
   if record != expect {
     t.Error("\nexpected:", expect, "\nreceived:", record)
