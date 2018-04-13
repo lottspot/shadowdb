@@ -38,6 +38,7 @@ func (db *shadowDB) Load(r io.Reader) error {
     }
   }
   if e.Error() != "EOF" {
+    db.records = []DBRecord{}
     return e
   }
   return nil
