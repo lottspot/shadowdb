@@ -40,6 +40,12 @@ func (db *shadowDB) User(uname string) shadowUser {
 }
 
 func (db *shadowDB) ApplyRecord(r DBRecord) {
+  i := db.findRecord(r.Uname())
+  if i >= 0 {
+    db.records[i] = r
+  } else {
+    db.records = append(db.records, r)
+  }
 }
 
 func (db *shadowDB) PurgeUser(uname string) {
