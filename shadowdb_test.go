@@ -64,3 +64,21 @@ func TestFindRecord(t *testing.T) {
     t.Error("incorrect user found")
   }
 }
+
+func TestPurgeUser(t *testing.T){
+  toPurge := stubDBRecord{
+    uname: func() (string) {return "purgeme"},
+  }
+  records := []DBRecord{
+    stubDBRecord{},
+    toPurge,
+    stubDBRecord{},
+  }
+  db := shadowDB{
+    records: records,
+  }
+  db.PurgeUser("purgeme")
+  if db.records[1].Uname() == "purgeme" {
+    t.Error("user was not purged")
+  }
+}
