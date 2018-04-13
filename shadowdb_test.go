@@ -2,6 +2,7 @@ package shadowdb
 
 import (
   "testing"
+  "bytes"
 )
 
 type stubDBRecord struct {
@@ -126,5 +127,22 @@ func TestUserGetter(t *testing.T){
   got := db.User("getme")
   if got.uname != toGet.uname {
     t.Error("expected to get user", toGet.uname, ", got", got.uname)
+  }
+}
+
+func TestDump(t *testing.T){
+  records := []DBRecord{
+    stubDBRecord{record: func()(string){return"user1"}},
+    stubDBRecord{record: func()(string){return"user2"}},
+    stubDBRecord{record: func()(string){return"user3"}},
+  }
+  file := bytes.NewBuffer([]byte{})
+  db := shadowDB{
+    records: records,
+  }
+  db.Dump(file)
+  result := file.String()
+  if result != "user1\nuser2\nuser3\n" {
+    t.Error("\nexpected:\nuser1\nuser2\nuser3\n\ngot:\n", result)
   }
 }
