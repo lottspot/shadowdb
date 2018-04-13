@@ -36,7 +36,13 @@ func (db *shadowDB) Dump(w io.Writer) error {
 }
 
 func (db *shadowDB) User(uname string) shadowUser {
-  return shadowUser{}
+  i := db.findRecord(uname)
+  if i >= 0 {
+    user := db.records[i].(*shadowUser)
+    return *user
+  } else {
+    return shadowUser{}
+  }
 }
 
 func (db *shadowDB) ApplyRecord(r DBRecord) {
