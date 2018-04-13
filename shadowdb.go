@@ -45,8 +45,13 @@ func (db *shadowDB) ApplyRecord(r DBRecord) {
 func (db *shadowDB) PurgeUser(uname string) {
 }
 
-func (db *shadowDB) findRecord(uname string) uint {
-  return uint(0)
+func (db *shadowDB) findRecord(uname string) int {
+  for i, record := range db.records {
+    if record.Uname() == uname {
+      return i
+    }
+  }
+  return -1
 }
 
 func (db *shadowDB) purgeRecordAt(i uint) {
