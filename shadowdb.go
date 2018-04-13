@@ -53,4 +53,7 @@ func (db *shadowDB) purgeRecordAt(i uint) {
 }
 
 func (db *shadowDB) insertRecordAt(u DBRecord, i uint) {
+  db.records = append(db.records, &shadowUser{})
+  copy(db.records[i+1:], db.records[i:])
+  db.records[i] = u
 }
