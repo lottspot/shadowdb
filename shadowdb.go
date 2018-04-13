@@ -50,6 +50,10 @@ func (db *shadowDB) findRecord(uname string) uint {
 }
 
 func (db *shadowDB) purgeRecordAt(i uint) {
+  records := make([]DBRecord, len(db.records)-1)
+  copy(records, db.records[:i])
+  copy(records[i:], db.records[i+1:])
+  db.records = records
 }
 
 func (db *shadowDB) insertRecordAt(u DBRecord, i uint) {
