@@ -3,6 +3,7 @@ package shadowdb
 import (
   "io"
   "bufio"
+  "reflect"
 )
 
 type DBRecord interface {
@@ -23,12 +24,22 @@ func NewDB() *shadowDB {
 }
 
 func (db *shadowDB) Load(r io.Reader) error {
-  /*
-   * parseFunc = reflect.ValueOf(db.recordParser)
-   * recordVal = reflect.ValueOf(record)
-   * parsedVal = parseFunc.Call([]reflect.Value{recordVal})
-   * parsedRec = parseVal[0].Interface().(DBRecord)
-   */
+  reader := bufio.NewReader(r)
+  parser := reflect.ValueOf(db.recordParser)
+  var e error
+  for e == nil {
+    var recordStr string
+    recordStr, e = reader.ReadString('\n')
+    if e == nil {
+      recordVal := reflect.ValueOf(recordStr)
+      result    := parser.Call([]reflect.Value{recordVal})
+      parsed    := result[0].Interface().(DBRecord)
+      db.records = append(db.records, parsed)
+    }
+  }
+  if e.Error() != "EOF" {
+    return e
+  }
   return nil
 }
 
